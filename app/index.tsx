@@ -17,14 +17,14 @@ function HomeScreen() {
       <Image
         source={require('../assets/images/Group 9.png')}
         style={styles.image}
-        resizeMode="center"
+        resizeMode="contain"
       />
 
       {/* Reddy Raccoon Image */}
       <Image
         source={require('../assets/images/ReddyRaccoon.png')}
-        style={styles.image}
-        resizeMode="center"
+        style={styles.raccoon}
+        resizeMode="contain"
       />
 
       {/* Buttons */}
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    width: 250,
   },
   button: {
     backgroundColor: '#70C4C3',
@@ -91,4 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  raccoon: {
+    height: 300
+  }
 });

@@ -1,44 +1,53 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions} from 'react-native';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
+
 export default function Profile7() {
   return (
     <SafeAreaProvider>
-        <SafeAreaView style={styles.container} edges={['left', 'right']}>
-          <ImageBackground source={require('../assets/images/profile_creation_bg7.png')} resizeMode="stretch" style={styles.image}>
-           <Image
-                  source={require('../assets/images/profileCreationQ7.png')}
-                  resizeMode="center"
-                />
-          <Text style={styles.buttonText}> 
-            Question 7/8
-            </Text>
-            <View style={styles.spacer} /> 
-            <Text style={styles.buttonText}> 
-            Does your household have a car?
-            </Text>
-            <View style={styles.spacer} /> 
+      <SafeAreaView style={styles.container} edges={['left', 'right']}>
+        <ImageBackground
+          source={require('../assets/images/profile_creation_bg7.png')}
+          resizeMode="stretch"
+          style={styles.image}
+        >
+          {/* Progress Bar and Question Text */}
+          <View style={styles.spacer} />
+          <View style={styles.topContainer}>
+            <Image
+              source={require('../assets/images/profileCreationQ7.png')}
+              style={styles.progressBar}
+            />
+            
+            <Text style={styles.qText}>Question 7/8</Text>
+          </View>
 
-    
-<TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}> 
-          <Link href="/profile8">
-          Yes
-          </Link> 
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}> 
-          <Link href="/profile8">
-          No
-          </Link> 
-          </Text>
-        </TouchableOpacity>
-          </ImageBackground>
-        </SafeAreaView>
-      </SafeAreaProvider>
+          {/* Spacer */}
+          <View style={styles.spacer} />
+
+          {/* Question Text */}
+          <Text style={styles.quesText}>Does your household have a car?</Text>
+
+          {/* Spacer */}
+          <View style={styles.spacer} />
+          <View style={styles.spacer} />
+
+          {/* Buttons */}
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>
+              <Link href="/profile8">Yes</Link>
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>
+              <Link href="/profile8">No</Link>
+            </Text>
+          </TouchableOpacity>
+        </ImageBackground>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -46,18 +55,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#fff',
   },
   image: {
-    flex:1, 
+    flex: 1,
     width: width,
-    height:height,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: height,
+    justifyContent: 'flex-start', // Align content to the top
+    alignItems: 'center', // Center content horizontally
+  },
+  topContainer: {
+    alignItems: 'center', // Center progress bar and text horizontally
+    marginTop: 20, // Add some margin at the top
+  },
+  progressBar: {
+    width: 300, // Adjust width as needed
+    height: 50, // Adjust height as needed
+    resizeMode: 'contain',
+  },
+  qText: {
+    color: '#000000', // Fixed color code (was missing a '0')
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10, // Add some space between progress bar and text
+  },
+  quesText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000000', // Fixed color code (was missing a '0')
+    textAlign: 'center', // Center the text
+    marginTop: 20, // Adjust margin as needed
   },
   button: {
     backgroundColor: '#70C4C3',
@@ -67,14 +93,14 @@ const styles = StyleSheet.create({
     width: 169,
     height: 48,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
-    color: '#00000',
+    color: '#000000', // Fixed color code (was missing a '0')
     fontSize: 16,
-    fontWeight: 'bold'
-
-  },  
+    fontWeight: 'bold',
+  },
   spacer: {
-    height: 30, // Adjust the height as needed
+    height: 60, // Adjust the height as needed
   },
 });

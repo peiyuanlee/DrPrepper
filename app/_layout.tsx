@@ -70,6 +70,7 @@ export default function RootLayout() {
       <Stack.Screen name="profile7" options={{ title: 'Profile7', headerShown: false }} />
       <Stack.Screen name="profile8" options={{ title: 'Profile8', headerShown: false }} />
       <Stack.Screen name="profile9" options={{ title: 'Profile9', headerShown: false }} />
+      <Stack.Screen name="checklist" options={{ title: 'Checklist', headerShown: false }} />
     </JsStack>
   );
 }

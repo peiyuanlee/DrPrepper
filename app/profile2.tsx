@@ -10,13 +10,13 @@ export default function Profile2() {
           <ImageBackground source={require('../assets/images/profile_creation_bg2.png')} resizeMode="stretch" style={styles.image}>
            <Image
                   source={require('../assets/images/profileCreationQ2.png')}
-                  resizeMode="center"
+                  style={styles.progressBar}
                 />
-          <Text style={styles.buttonText}> 
+          <Text style={styles.qText}> 
             Question 2/8
             </Text>
             <View style={styles.spacer} /> 
-            <Text style={styles.buttonText}> 
+            <Text style={styles.quesText}> 
             How old are you?
             </Text>
             <View style={styles.spacer} /> 
@@ -92,4 +92,29 @@ const styles = StyleSheet.create({
   spacer: {
     height: 30, // Adjust the height as needed
   },
+  infoText:{
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 50, 
+    marginTop:10,
+  }, 
+  quesText:{
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#00000',
+  }, 
+  qText:{
+    flexDirection: 'row',
+    alignContent: 'flex-start', 
+    marginBottom: 50,
+    color: '#00000',
+    fontSize: 20,
+    fontWeight: 'bold'
+
+  },
+  progressBar:{
+    alignSelf: 'center',
+    justifyContent: "flex-start", 
+  },
+  
 });
