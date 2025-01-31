@@ -39,11 +39,19 @@ export default function Checklist() {
         <View style={styles.container}>
           <ScrollView>
             <View style={styles.spacer} />
+            <View style={styles.headerContainer}>
+            <Image
+                        source={require('../assets/images/checklist_chat.png')}
+                        style={styles.raccoon}
+                        resizeMode="contain"
+             />
             <Image
                         source={require('../assets/images/ReddyRaccoon.png')}
                         style={styles.raccoon}
                         resizeMode="contain"
              />
+             </View>
+             <View style={styles.spacer} />
             {items.map((item) => (
               <TouchableOpacity
                 key={item.id}
@@ -147,5 +155,12 @@ const styles = StyleSheet.create({
   },
   raccoon:{
     height: 100,
+  },
+  headerContainer:{
+    //flex: 1, // Take up the entire screen
+    flexDirection: 'row', // Arrange images side by side
+    justifyContent: 'center', // Center images horizontally
+    alignItems: 'center', // Center images vertically
+
   }
 });
