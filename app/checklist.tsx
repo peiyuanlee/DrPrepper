@@ -4,7 +4,8 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-//import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Checklist() {
       const [items, setItems] = useState([
@@ -34,6 +35,15 @@ export default function Checklist() {
       const completedCount = items.filter((item) => item.completed).length;
       const totalItems = items.length;
       const progress = completedCount / totalItems;
+      const getGradientColors = () => {
+        if (progress < 0.5) {
+          return ['#FF0000', '#FFA500']; // Red to Orange
+        } else if (progress < 1) {
+          return ['#FFA500', '#FFFF00']; // Orange to Yellow
+        } else {
+          return ['#FFFF00', '#00FF00']; // Yellow to Green
+        }
+      };
     
       return (
         <View style={styles.container}>
@@ -60,10 +70,9 @@ export default function Checklist() {
               >
             <View style={styles.checkboxContainer}>
               <View style={[styles.checkbox, item.completed && styles.checkboxChecked]}>
-                {/* {item.completed && (
-                  //<Icon name="check" size={20} color="#4CAF50" /> // Green checkmark
-                )} */}
-                {item.completed}
+                {item.completed && (
+                  <Icon name="check" size={20} color="#4CAF50" /> // Green checkmark
+                )}
               </View>
               <Text style={item.completed ? styles.completedText : styles.text}>
               {item.text}
@@ -74,16 +83,18 @@ export default function Checklist() {
           </ScrollView>
     
           <View style={styles.progressContainer}>
-            <Progress.Bar
-              progress={progress}
-              width={null} // Use full width of the container
-              color="#007AFF"
-              borderWidth={0}
-              unfilledColor="#e0e0e0"
-              borderRadius={5}
-              height={20}
-            />
-          </View>
+        <Text style={styles.progressText}>
+          Progress: {completedCount}/{totalItems}
+        </Text>
+        <View style={styles.progressBarBackground}>
+          <LinearGradient
+            colors={getGradientColors()}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
+          />
+        </View>
+      </View>
     
           {showConfetti && (
             <ConfettiCannon
@@ -118,8 +129,6 @@ const styles = StyleSheet.create({
   },
   completedText: {
     fontSize: 16,
-    //textDecorationLine: 'line-through',
-    //color: '#888',
     marginLeft:20, 
     fontWeight: 'bold',
   },
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 4,
-    backgroundColor: '#F5F5DC', // Beige color
+    backgroundColor: '#F5F5DC', 
     borderWidth: 1,
     borderColor: '#ccc',
     justifyContent: 'center',
@@ -162,5 +171,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Center images horizontally
     alignItems: 'center', // Center images vertically
 
-  }
+  },
+  progressBarBackground: {
+    height: 10,
+    width: '100%',
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: '100%',
+    borderRadius: 5,
+  },
 });
