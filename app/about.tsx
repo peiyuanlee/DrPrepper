@@ -30,16 +30,21 @@ export default function AboutScreen() {
     <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={['left', 'right']}>
           <ImageBackground source={require('../assets/images/profile_creation_bg.png')} resizeMode="stretch" style={styles.image}>
-           <Image
-                  source={require('../assets/images/profileCreationQ1.png')}
-                  style={styles.progressBar}
-                />
-          <Text style={styles.qText}> 
-            Question 1/8
-            </Text>
-            <Text style={styles.quesText}> 
-            Tell us about yourself!
-            </Text>
+          <View style={styles.spacer} />
+                      {/* Progress Bar */}
+                      <View style={styles.topContainer}>
+                        <Image
+                          source={require('../assets/images/profileCreationQ1.png')}
+                          style={styles.progressBar}
+                        />
+                        <Text style={styles.qText}>Question 1/8</Text>
+                      </View>
+            
+                      {/* Question Text */}
+                      <Text style={styles.quesText}>Tell us about yourself!</Text>
+            
+                      {/* Spacer */}
+                      <View style={styles.spacer} />
             <Text style={styles.infoText}> 
             This information helps us get you as ready as possible for any natural disaster.
             </Text>
@@ -97,16 +102,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
     color: '#fff',
   },
   image: {
-    flex:1, 
+    flex: 1,
     width: width,
-    height:height,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: height,
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
   },
   button: {
     backgroundColor: '#70C4C3',
@@ -143,8 +150,9 @@ const styles = StyleSheet.create({
 
   },
   progressBar:{
-    alignSelf: 'center',
-    justifyContent: "flex-start", 
+    width: 300, // Adjust width as needed
+    height: 50, // Adjust height as needed
+    resizeMode: 'contain',
   },
   input: {
     height: 50,
@@ -169,5 +177,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginBottom: 10,
+  },
+  topContainer: {
+    alignItems: 'center', // Center progress bar and text horizontally
+    marginTop: 20, // Add some margin at the top
+  },
+  spacer: {
+    height: 50, // Adjust the height as needed
   },
 });

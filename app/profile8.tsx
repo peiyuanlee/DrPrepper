@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
     marginTop: 20, // Add some margin at the top
   },
   progressBar: {
-    width: 500, // Adjust height as needed
-    height: 20, 
+    width: 300, // Adjust width as needed
+    height: 50, // Adjust height as needed
     resizeMode: 'contain',
   },
   qText: {
@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
   egText: {
     color: '#000000', // Fixed color code (was missing a '0')
     fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'center', // Center the text
     marginHorizontal: 20, // Add horizontal margin for better readability
+    marginTop:10,
   },
   button: {
     backgroundColor: '#70C4C3',

@@ -8,19 +8,25 @@ export default function Profile2() {
     <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={['left', 'right']}>
           <ImageBackground source={require('../assets/images/profile_creation_bg2.png')} resizeMode="stretch" style={styles.image}>
-           <Image
-                  source={require('../assets/images/profileCreationQ2.png')}
-                  style={styles.progressBar}
-                />
-          <Text style={styles.qText}> 
-            Question 2/8
-            </Text>
-            <View style={styles.spacer} /> 
-            <Text style={styles.quesText}> 
-            How old are you?
-            </Text>
-            <View style={styles.spacer} /> 
 
+        <View style={styles.spacer} />
+          {/* Progress Bar */}
+          <View style={styles.topContainer}>
+            <Image
+              source={require('../assets/images/profileCreationQ3.png')}
+              style={styles.progressBar}
+            />
+            <Text style={styles.qText}>Question 2/8</Text>
+          </View>
+
+          {/* Spacer */}
+          <View style={styles.spacer} />
+
+          {/* Question Text */}
+          <Text style={styles.quesText}>How old are you?</Text>
+
+          {/* Spacer */}
+          <View style={styles.spacer} />
     
 
         <TouchableOpacity style={styles.button}>
@@ -68,11 +74,11 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   image: {
-    flex:1, 
+    flex: 1,
     width: width,
-    height:height,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: height,
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
   },
   button: {
     backgroundColor: '#70C4C3',
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
 
   },  
   spacer: {
-    height: 30, // Adjust the height as needed
+    height: 50, // Adjust the height as needed
   },
   infoText:{
     fontSize: 20,
@@ -113,8 +119,13 @@ const styles = StyleSheet.create({
 
   },
   progressBar:{
-    alignSelf: 'center',
-    justifyContent: "flex-start", 
+    width: 300, // Adjust width as needed
+    height: 50, // Adjust height as needed
+    resizeMode: 'contain',
+  },
+  topContainer: {
+    alignItems: 'center', // Center progress bar and text horizontally
+    marginTop: 20, // Add some margin at the top
   },
   
 });

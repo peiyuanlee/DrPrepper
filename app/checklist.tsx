@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Progress from 'react-native-progress';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link } from 'expo-router'; // For navigation
+import { Link, useRouter } from 'expo-router'; // For navigation
 
 export default function Checklist() {
   const [items, setItems] = useState([
     { id: 1, text: 'Download app', completed: true },
     { id: 2, text: 'Complete profile', completed: true },
-    { id: 3, text: 'Pack Go-Bag', completed: false },
+    { id: 3, text: 'Pack Go-Bag', completed: false,
+      expanded: false,
+      subtasks: [
+        { id: 3.1, text: 'Flashlight and batteries', completed: false },
+        { id: 3.2, text: 'Radio', completed: false },
+        { id: 3.3, text: 'Portable Charger', completed: false },
+        { id: 3.4, text: 'First Aid Kit', completed: false },
+        { id: 3.5, text: 'Medication', completed: false },
+        { id: 3.6, text: 'Cash', completed: false },
+      ], },
     {
       id: 4,
       text: 'Store food & water',
@@ -38,6 +47,8 @@ export default function Checklist() {
 
   const [showConfetti, setShowConfetti] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State for popup visibility
+  const progressAnim = new Animated.Value(0); // Animation for progress bar
+  const router = useRouter();
 
   const toggleItem = (id: number) => {
     const updatedItems = items.map((item) => {
@@ -75,6 +86,7 @@ export default function Checklist() {
     if (allCompleted) {
       setShowConfetti(true);
       setShowPopup(true); // Show popup when all tasks are completed
+      animateProgressBar(); // Trigger progress bar animation
       setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
     }
   };
@@ -110,6 +122,20 @@ export default function Checklist() {
     } else {
       return ['#FFFF00', '#00FF00'];
     }
+  };
+
+  // Progress bar animation
+  const animateProgressBar = () => {
+    Animated.timing(progressAnim, {
+      toValue: 1,
+      duration: 1000, // 1 second animation
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handleNextScreen = () => {
+    setShowPopup(false); // Close the modal
+    router.push('/'); // Navigate to the next screen
   };
 
   return (
@@ -200,27 +226,18 @@ export default function Checklist() {
       </ScrollView>
 
       <View style={styles.progressContainer}>
-        <Text style={styles.progressText}>
-          Progress: {completedCount}/{totalItems}
-        </Text>
         <View style={styles.progressBarBackground}>
           <LinearGradient
-            colors={getGradientColors()}
+            colors={['#C83402', '#C89002', '#4CAF50', '#81C784', '#FFFF00']} // Green gradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
           />
+          <Text style={styles.progressBarText}>
+            {progress === 1 ? 'Great start!' : 'Keep it up!'}
+          </Text>
         </View>
       </View>
-
-      {showConfetti && (
-        <ConfettiCannon
-          count={200}
-          origin={{ x: Dimensions.get('window').width / 2, y: 0 }}
-          fallSpeed={3000}
-          fadeOut={true}
-        />
-      )}
 
       {/* Popup Screen */}
       <Modal
@@ -230,20 +247,23 @@ export default function Checklist() {
         onRequestClose={() => setShowPopup(false)}
       >
         <View style={styles.popupBackground}>
-          <View style={styles.popupContainer}>
+            {showConfetti && (
+              <ConfettiCannon
+                count={200}
+                origin={{ x: Dimensions.get('window').width / 2, y: 0 }}
+                fallSpeed={3000}
+                fadeOut={true}
+              />
+            )}
             <Image
-              source={require('../assets/images/ReddyRaccoon.png')}
+              source={require('../assets/images/Frame 65.png')}
               style={styles.popupRaccoon}
               resizeMode="contain"
             />
-            <Text style={styles.popupText}>All tasks completed! 🎉</Text>
-            <Link href="/next-screen" asChild>
-              <TouchableOpacity style={styles.popupButton}>
-                <Text style={styles.popupButtonText}>Go to Next Screen</Text>
+              <TouchableOpacity style={styles.popupButton} onPress={handleNextScreen}>
+                <Text style={styles.popupButtonText}>Keep Going!</Text>
               </TouchableOpacity>
-            </Link>
           </View>
-        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -330,32 +350,45 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   progressBarBackground: {
-    height: 10,
+    height: 30,
     width: '100%',
-    backgroundColor: '#F5F5DC',
-    borderRadius: 5,
+    backgroundColor: '#E0E0E0', // Light gray background
+    borderRadius: 15, // Rounded corners
     overflow: 'hidden',
+    justifyContent: 'center',
   },
   progressBarFill: {
     height: '100%',
-    borderRadius: 5,
+    borderRadius: 15, // Rounded corners
+  },
+  progressBarText: {
+    position: 'absolute',
+    alignSelf: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#fff', // White text
   },
   popupBackground: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Translucent background
+    backgroundColor: 'rgba(255, 255, 255, 0.9)', // White translucent background
   },
   popupContainer: {
-    width: '80%',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    alignItems: 'center',
+    // width: '80%',
+    // padding: 20,
+    // backgroundColor: '#fff',
+    // borderRadius: 10,
+    // alignItems: 'center',
+    // elevation: 5, 
+    // shadowColor: '#000', 
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 5,
   },
   popupRaccoon: {
-    height: 100,
-    width: 100,
+    //height: 100,
+    width: '80%',
     marginBottom: 20,
   },
   popupText: {
@@ -365,12 +398,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   popupButton: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#70C4C3',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+    width: 250,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   popupButtonText: {
-    color: '#fff',
+    color: '#000000', // Fixed color code (was missing a '0')
     fontSize: 16,
     fontWeight: 'bold',
   },
