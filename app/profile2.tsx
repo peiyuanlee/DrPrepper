@@ -1,9 +1,13 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, useRouter} from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 export default function Profile2() {
+  const router = useRouter();
+  const handleNextScreen = () => {
+    router.push('/profile3'); // Navigate to the next screen
+  };
   return (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={['left', 'right']}>
@@ -29,32 +33,24 @@ export default function Profile2() {
           <View style={styles.spacer} />
     
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
           <Text style={styles.buttonText}> 
-          <Link href="/profile3">
           13-18
-          </Link> 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
           <Text style={styles.buttonText}> 
-          <Link href="/profile3">
           18-40
-          </Link> 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
           <Text style={styles.buttonText}> 
-          <Link href="/profile3">
           40-60
-          </Link> 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
           <Text style={styles.buttonText}> 
-          <Link href="/profile3">
           60+
-          </Link> 
           </Text>
         </TouchableOpacity>
           </ImageBackground>

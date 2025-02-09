@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, TextInput, Button, Alert} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, useRouter} from 'expo-router';
 import { useState } from 'react';
-import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,6 +23,10 @@ export default function AboutScreen() {
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+  const router = useRouter();
+  const handleNextScreen = () => {
+    router.push('/profile2'); // Navigate to the next screen
   };
 
   return (
@@ -86,10 +89,10 @@ export default function AboutScreen() {
       {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
     
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}> <Link href="/profile2">
+      <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
+        <Text style={styles.buttonText}> 
           Next
-        </Link></Text>
+       </Text>
       </TouchableOpacity>
 
           </ImageBackground>

@@ -61,6 +61,9 @@ export default function RootLayout() {
       },
     }}>
       <Stack.Screen name="index" options={{ title: 'Home', headerShown: false }} />
+      <Stack.Screen name="location" options={{ title: 'Location Services' , headerShown: false}} />
+      <Stack.Screen name="emergency" options={{ title: 'Emergency Alert', headerShown: false }} />
+      <Stack.Screen name="events" options={{ title: 'Top 3 Events', headerShown: false }} />
       <Stack.Screen name="about" options={{ title: 'About', headerShown: false }} />
       <Stack.Screen name="profile2" options={{ title: 'Profile2', headerShown: false }} />
       <Stack.Screen name="profile3" options={{ title: 'Profile3', headerShown: false }} />

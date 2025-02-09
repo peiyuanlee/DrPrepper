@@ -2,13 +2,18 @@
 import './gesture-handler';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions} from 'react-native';
-// import { createStackNavigator } from '@react-navigation/stack';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-// import { NavigationContainer } from '@react-navigation/native';
-import { Link } from 'expo-router';
+import { Link, useRouter} from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
 function HomeScreen() {
+  const router = useRouter();
+  const handleNextScreen = () => {
+    router.push('/location'); // Navigate to the next screen
+  };
+  const navProfile = () => {
+    router.push('/about'); // Navigate to the next screen
+  };
   return (
     <SafeAreaProvider>
     <SafeAreaView style={styles.container} edges={['left', 'right']}>
@@ -28,13 +33,15 @@ function HomeScreen() {
       />
 
       {/* Buttons */}
-      <TouchableOpacity style={styles.button}>
+      <Link href="/location">
+      <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
       <Text style={styles.buttonText}>Sign In</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.button}>
-      <Text style={styles.buttonText}> <Link href="/about">
+    </Link>
+    <TouchableOpacity style={styles.button} onPress={navProfile}>
+      <Text style={styles.buttonText}> 
         Create Profile
-      </Link></Text>
+     </Text>
     </TouchableOpacity>
       </ImageBackground>
     </SafeAreaView>

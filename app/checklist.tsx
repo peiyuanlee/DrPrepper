@@ -141,7 +141,7 @@ export default function Checklist() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
-        <View style={styles.spacer} />
+
         <View style={styles.headerContainer}>
           <Image
             source={require('../assets/images/checklist_chat.png')}
@@ -154,7 +154,7 @@ export default function Checklist() {
             resizeMode="contain"
           />
         </View>
-        <View style={styles.spacer} />
+
         {items.map((item) => (
           <View key={item.id}>
             {item.subtasks ? (
@@ -227,14 +227,18 @@ export default function Checklist() {
 
       <View style={styles.progressContainer}>
         <View style={styles.progressBarBackground}>
-          <LinearGradient
-            colors={['#C83402', '#C89002', '#4CAF50', '#81C784', '#FFFF00']} // Green gradient
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={[styles.progressBarFill, { width: `${progress * 100}%` }]}
-          />
+        <View
+      style={[
+        styles.progressBarFill,
+        {
+          width: `${progress * 100}%`,
+          backgroundColor:
+            progress < 0.33 ? '#E57373' : progress < 0.66 ? '#FFEB3B' : '#81C784', // Red, Yellow, Green
+        },
+      ]}
+        />
           <Text style={styles.progressBarText}>
-            {progress === 1 ? 'Great start!' : 'Keep it up!'}
+            {progress < 0.33 ? 'Great start!' : 'Keep it up!'}
           </Text>
         </View>
       </View>
@@ -263,7 +267,24 @@ export default function Checklist() {
               <TouchableOpacity style={styles.popupButton} onPress={handleNextScreen}>
                 <Text style={styles.popupButtonText}>Keep Going!</Text>
               </TouchableOpacity>
-          </View>
+              <View style={styles.progressContainer}>
+          <View style={styles.progressBarBackground}>
+                <View
+              style={[
+                styles.progressBarFill,
+                {
+                  width: `${100}%`,
+                  backgroundColor:
+                    '#81C784', // Red, Yellow, Green
+                },
+              ]}
+                />
+                  <Text style={styles.progressBarText}>
+                    {progress === 1 ? 'Great start!' : 'Keep it up!'}
+                  </Text>
+                </View>
+              </View>
+              </View>
       </Modal>
     </SafeAreaView>
   );
@@ -336,18 +357,16 @@ const styles = StyleSheet.create({
     height: 20,
   },
   raccoon: {
-    height: 50,
-    width: 50,
+    width: '30%',
   },
   chatbox: {
-    height: 100,
-    width: 100,
+    width:'70%'
   },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    //padding: 10,
   },
   progressBarBackground: {
     height: 30,
@@ -375,16 +394,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.9)', // White translucent background
   },
   popupContainer: {
-    // width: '80%',
-    // padding: 20,
-    // backgroundColor: '#fff',
-    // borderRadius: 10,
-    // alignItems: 'center',
-    // elevation: 5, 
-    // shadowColor: '#000', 
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 5,
+    alignItems: 'center', // Center progress bar and text horizontally
+    marginTop: 20, // Add some margin at the top
+    flexDirection: 'row'
   },
   popupRaccoon: {
     //height: 100,
@@ -412,4 +424,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  progressBar: {
+    width: '80%', // Adjust width as needed
+    //height: 50, // Adjust height as needed
+    resizeMode: 'contain',
+  },
+  burst:{
+    margin:0
+  }
 });
