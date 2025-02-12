@@ -233,7 +233,7 @@ export default function Checklist() {
         {
           width: `${progress * 100}%`,
           backgroundColor:
-            progress < 0.33 ? '#E57373' : progress < 0.66 ? '#FFEB3B' : '#81C784', // Red, Yellow, Green
+            progress < 0.33 ? '#E57373' : progress < 0.66 ? '#C89002' : '#81C784', // Red, Yellow, Green
         },
       ]}
         />
@@ -275,11 +275,15 @@ export default function Checklist() {
                 {
                   width: `${100}%`,
                   backgroundColor:
-                    '#81C784', // Red, Yellow, Green
+                  progress < 0.33 ? '#E57373' : progress < 0.66 ? '#C89002' : '#81C784', // Red, Yellow, Green
                 },
               ]}
                 />
-                  <Text style={styles.progressBarText}>
+                  <Text style={[styles.progressBarText, 
+                    {
+                      color: progress < 0.33 ? '#E57373' : progress < 0.66 ? '#C89002' : '#81C784',
+                    }
+                  ]}>
                     {progress === 1 ? 'Great start!' : 'Keep it up!'}
                   </Text>
                 </View>
@@ -385,7 +389,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#fff', // White text
+    //color: '#fff', // White text
   },
   popupBackground: {
     flex: 1,
