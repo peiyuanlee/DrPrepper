@@ -1,31 +1,40 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
+import React, { useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function EmergencyScreen() {
+  // Automatically show the alert when the screen loads
+  const router = useRouter();
+  const handleNextScreen = () => {
+    router.push('/events'); // Navigate to the next screen
+  };
+  useEffect(() => {
+    Alert.alert(
+      "Alert", // Title of the alert
+      "We have detected an emergency situation in your area. Would you like to learn more?", // Message of the alert
+      [
+        {
+          text: "Cancel", // Button text
+          onPress: () => console.log("Cancel Pressed"), // Action on press
+          style: "cancel" // Button style (optional)
+        },
+        {
+          text: "OK",
+          onPress: () => handleNextScreen(),
+
+        }
+      ],
+      { cancelable: false } // Prevents tapping outside to dismiss (optional)
+    );
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   return (
     <View style={styles.container}>
       <Image
         source={require('../assets/images/ReddyRaccoon.png')} // Replace with your raccoon image
         style={styles.raccoonImage}
       />
-      <Text style={styles.title}>Alert</Text>
-      <Text style={styles.subtitle}>
-        We have detected an emergency situation in your area. Would you like to learn more?
-      </Text>
-      <Text style={styles.note}>
-        Something's going on in your area - let's get ready!
-      </Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Yes</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>No</Text>
-      </TouchableOpacity>
-      <Link href="/events" asChild>
-        <TouchableOpacity style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
-      </Link>
+      {/* Add additional UI components here if needed */}
     </View>
   );
 }
