@@ -1,7 +1,9 @@
 import { Stack } from 'expo-router';
 import { JsStack } from "./components/JsStack";
 import { Easing } from "react-native-reanimated";
+import { RootStackParamList } from './types';
 const ANIMATION_DURATION = 600;
+
 
 export default function RootLayout() {
   return (
@@ -74,6 +76,7 @@ export default function RootLayout() {
       <Stack.Screen name="profile8" options={{ title: 'Profile8', headerShown: false }} />
       <Stack.Screen name="profile9" options={{ title: 'Profile9', headerShown: false }} />
       <Stack.Screen name="checklist" options={{ title: 'Checklist', headerShown: false }} />
+      <Stack.Screen name="dashboard" options={{ title: 'Dashboard', headerShown: false }} />
     </JsStack>
   );
 }

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as Progress from 'react-native-progress';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal, Animated, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Link, useRouter } from 'expo-router'; // For navigation
+import { useRouter } from 'expo-router'; // For navigation
 
 export default function Checklist() {
   const [items, setItems] = useState([
@@ -114,15 +113,6 @@ export default function Checklist() {
 
   const progress = completedCount / totalItems;
 
-  const getGradientColors = () => {
-    if (progress < 0.5) {
-      return ['#FF0000', '#FFA500'];
-    } else if (progress < 1) {
-      return ['#FFA500', '#FFFF00'];
-    } else {
-      return ['#FFFF00', '#00FF00'];
-    }
-  };
 
   // Progress bar animation
   const animateProgressBar = () => {
@@ -135,12 +125,56 @@ export default function Checklist() {
 
   const handleNextScreen = () => {
     setShowPopup(false); // Close the modal
-    router.push('/'); // Navigate to the next screen
+    router.push('/dashboard'); // Navigate to the next screen
+  };
+  const [modalVisible, setModalVisible] = useState(true);
+
+  const handleStartChecklist = () => {
+    setModalVisible(false); 
+  };
+
+  const handleMaybeLater = () => {
+    setModalVisible(false); 
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style= {styles.container} >
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+      <Modal
+      visible={modalVisible}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={() => setModalVisible(false)}
+    >
+      <View style={styles.modalBackground}>
+        <View style={styles.modalContainer}>
+          
+          <View style = {styles.modalHeader}> 
+          <Image
+            source={require('../assets/images/badge.png')} // Replace with your image
+            style={styles.modalImage}
+            resizeMode="contain"
+          />
+            <Text style={styles.modalTitle}>First up, your{"\n"}Baseline Badge</Text>
+            <Image
+            source={require('../assets/images/badge.png')} // Replace with your image
+            style={styles.modalImage}
+            resizeMode="contain"
+          />
+            </View>
+          
+          <Text style={styles.modalText}>
+            Completing this checklist will ensure you're baseline prepared for whatever comes your way.
+          </Text>
+          <TouchableOpacity style={styles.startButton} onPress={handleStartChecklist}>
+            <Text style={styles.buttonText}>Let's do it!</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.maybeLaterButton} onPress={handleMaybeLater}>
+            <Text style={styles.maybeLaterText}>Maybe later</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
 
         <View style={styles.headerContainer}>
           <Image
@@ -173,6 +207,13 @@ export default function Checklist() {
                       {item.text}
                     </Text>
                   </View>
+                  {item.subtasks && (
+                <Icon
+                  name={item.expanded ? 'remove' : 'add'} // Plus or minus icon
+                  size={24}
+                  color="#000"
+                />
+              )}
                 </TouchableOpacity>
                 {item.expanded &&
                   item.subtasks.map((subtask) => (
@@ -287,7 +328,19 @@ export default function Checklist() {
                     {progress === 1 ? 'Great start!' : 'Keep it up!'}
                   </Text>
                 </View>
+                <View style={styles.modalProgress}>
+                          <Image
+                            source={require('../assets/images/profileCreationQ8.png')}
+                            style={styles.progressBar}
+                          />
+                          <Image
+                            source={require('../assets/images/Burst.png')}
+                            style={styles.burst}
+                          />
+                          
               </View>
+              </View>
+
               </View>
       </Modal>
     </SafeAreaView>
@@ -297,7 +350,7 @@ export default function Checklist() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    //padding: 10,
     backgroundColor: '#fff',
   },
   item: {
@@ -337,14 +390,14 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 4,
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#D9D9D9',
     borderWidth: 1,
     borderColor: '#ccc',
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxChecked: {
-    backgroundColor: '#F5F5DC',
+    backgroundColor: '#D9D9D9',
     borderColor: '#4CAF50',
   },
   progressContainer: {
@@ -368,8 +421,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    //justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flex:1,
+
     //padding: 10,
   },
   progressBarBackground: {
@@ -435,5 +490,95 @@ const styles = StyleSheet.create({
   },
   burst:{
     margin:0
-  }
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    alignItems: 'center',
+    overflow: 'hidden',
+    height:'40%'
+  },
+  modalImage: {
+    width: '15%'
+
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+    color: '#fff'
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#000',
+    padding: 30,
+    fontWeight: 'bold'
+  },
+  modalHeader:{
+    backgroundColor: '#70C4C3',
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20,
+    padding: 10,
+    justifyContent: 'center'
+
+  },
+  startButton: {
+    backgroundColor: '#70C4C3',
+    padding: 15,
+    borderRadius: 10,
+    width: '70%',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  maybeLaterButton: {
+    padding: 10,
+  },
+  maybeLaterText: {
+    color: '#70C4C3',
+    fontSize: 12,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  buttonText: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalProgress: {
+    alignItems: 'center', // Center progress bar and text horizontally
+    marginTop: 20, // Add some margin at the top
+    flexDirection: 'row'
+  },
 });

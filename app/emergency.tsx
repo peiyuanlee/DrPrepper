@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Image, StyleSheet, Alert, ImageBackground, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+
+const { width, height } = Dimensions.get('window');
 
 export default function EmergencyScreen() {
-  // Automatically show the alert when the screen loads
   const router = useRouter();
   const handleNextScreen = () => {
-    router.push('/events'); // Navigate to the next screen
+    router.push('/events'); 
   };
   useEffect(() => {
     Alert.alert(
-      "Alert", // Title of the alert
+      "⚠️Alert⚠️", // Title of the alert
       "We have detected an emergency situation in your area. Would you like to learn more?", // Message of the alert
       [
         {
@@ -29,65 +31,60 @@ export default function EmergencyScreen() {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require('../assets/images/ReddyRaccoon.png')} // Replace with your raccoon image
-        style={styles.raccoonImage}
-      />
-      {/* Add additional UI components here if needed */}
-    </View>
+    <SafeAreaProvider>
+          <SafeAreaView style={styles.container} edges={['left', 'right']}>
+            <ImageBackground
+              source={require('../assets/images/landingpage.png')}
+              resizeMode="stretch"
+              style={styles.bg_image}
+              imageStyle={{ opacity: 0.2 }}
+            >
+              <View style={styles.topContainer}>
+                <Image
+              source={require('../assets/images/chatbox_2.png')}
+              style={styles.chatbox}
+              resizeMode="contain"
+                />
+             </View>
+                <Image
+                    source={require('../assets/images/ReddyRaccoon.png')}
+                    style={styles.raccoon}
+                    resizeMode="contain"
+                />
+              </ImageBackground>
+            </SafeAreaView>
+          </SafeAreaProvider>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  raccoonImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  note: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  button: {
-    width: '100%',
-    padding: 15,
-    backgroundColor: '#007AFF',
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  nextButton: {
-    marginTop: 20,
-    padding: 10,
-  },
-  nextButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+container: {
+flex: 1,
+justifyContent: 'center',
+alignItems: 'center',
+},
+bg_image: {
+flex: 1,
+width: width,
+height: height,
+justifyContent: 'center',
+alignItems: 'center',
+},
+topContainer: {
+position: 'absolute',
+top: -100, // Adjust this value to position the chatbox
+justifyContent: 'center',
+alignItems: 'center',
+width: '100%',
+},
+chatbox: {
+width: 350,
+height: 900, // Adjust height as needed
+},
+raccoon: {
+height: 250,
+marginTop: 500, // Adjust spacing between chatbox and raccoon
+},
+
 });

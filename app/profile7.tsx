@@ -36,7 +36,6 @@ export default function Profile7() {
 
           {/* Spacer */}
           <View style={styles.spacer} />
-          <View style={styles.spacer} />
 
           {/* Buttons */}
           <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     color: '#000000', // Fixed color code (was missing a '0')
     textAlign: 'center', // Center the text
     marginTop: 20, // Adjust margin as needed
+    marginHorizontal: 80
   },
   button: {
     backgroundColor: '#70C4C3',

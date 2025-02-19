@@ -33,8 +33,6 @@ export default function Profile8() {
           {/* Question Text */}
           <Text style={styles.quesText}>Do you have the necessary mobility aids for your household?</Text>
 
-          {/* Spacer */}
-          <View style={styles.spacer} />
 
           {/* Example Text */}
           <Text style={styles.egText}>Examples include walkers, handicap vehicles, etc.</Text>
@@ -109,8 +107,9 @@ const styles = StyleSheet.create({
     color: '#000000', // Fixed color code (was missing a '0')
     fontSize: 16,
     textAlign: 'center', // Center the text
-    marginHorizontal: 20, // Add horizontal margin for better readability
-    marginTop:10,
+    marginHorizontal: 50, // Add horizontal margin for better readability
+    marginTop:40,
+    fontWeight: 'bold',
   },
   button: {
     backgroundColor: '#70C4C3',

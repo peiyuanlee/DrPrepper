@@ -1,77 +1,90 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Link } from 'expo-router';
 
+import './gesture-handler';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions} from 'react-native';
+import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { Link, useRouter} from 'expo-router';
+
+const { width, height } = Dimensions.get('window');
 export default function EventsScreen() {
+  const router = useRouter();
+  const navProfile = () => {
+    router.push('/about'); 
+  };
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider>
+    <SafeAreaView style={styles.container} edges={['left', 'right']}>
+      <ImageBackground source={require('../assets/images/landingpage.png')} resizeMode="stretch" style={styles.bg_image} imageStyle= 
+      {{opacity:0.2}}>
       <Image
-        source={require('../assets/images/ReddyRaccoon.png')} // Replace with your raccoon image
-        style={styles.raccoonImage}
+        source={require('../assets/images/events_checkbox.png')}
+        style={styles.image}
+        resizeMode="contain"
       />
-      <Text style={styles.title}>The three most likely events in your area are:</Text>
-      <View style={styles.eventList}>
-        <Text style={styles.event}>1. Earthquake</Text>
-        <Text style={styles.event}>2. Wildfire</Text>
-        <Text style={styles.event}>3. Mudslide</Text>
-      </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Get Ready!</Text>
-      </TouchableOpacity>
-      <Link href="/" asChild>
-        <TouchableOpacity style={styles.nextButton}>
-          <Text style={styles.nextButtonText}>Back to Home</Text>
-        </TouchableOpacity>
-      </Link>
-    </View>
+
+      {/* Reddy Raccoon Image */}
+      <Image
+        source={require('../assets/images/ReddyRaccoon.png')}
+        style={styles.raccoon}
+        resizeMode="contain"
+      />
+
+      {/* Buttons */}
+    <TouchableOpacity style={styles.button} onPress={navProfile}>
+      <Text style={styles.buttonText}> 
+        Get Ready!
+     </Text>
+    </TouchableOpacity>
+      </ImageBackground>
+    </SafeAreaView>
+  </SafeAreaProvider>
+    
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
   },
-  raccoonImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  eventList: {
-    marginBottom: 20,
-  },
-  event: {
+  headerText: {
     fontSize: 18,
-    marginBottom: 10,
+    textAlign: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    opacity:1
+  },
+  image: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 650,
   },
   button: {
-    width: '100%',
+    backgroundColor: '#70C4C3',
     padding: 15,
-    backgroundColor: '#007AFF',
     borderRadius: 10,
+    marginVertical: 10,
+    width: 169,
+    height: 48,
     alignItems: 'center',
-    marginBottom: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: '#00000',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '700'
+
   },
-  nextButton: {
-    marginTop: 20,
-    padding: 10,
+  bg_image: {
+    flex:1, 
+    width: width,
+    height:height,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  nextButtonText: {
-    color: '#007AFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+  raccoon: {
+    height: 300
+  }
 });
