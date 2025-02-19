@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   popupRaccoon: {
-    //height: 100,
     width: '50%',
     alignItems: 'flex-end',
   },

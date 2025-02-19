@@ -308,37 +308,26 @@ export default function Checklist() {
               <TouchableOpacity style={styles.popupButton} onPress={handleNextScreen}>
                 <Text style={styles.popupButtonText}>Keep Going!</Text>
               </TouchableOpacity>
-              <View style={styles.progressContainer}>
-          <View style={styles.progressBarBackground}>
+              <View style={styles.modalProgressContainer}>
                 <View
               style={[
                 styles.progressBarFill,
                 {
-                  width: `${100}%`,
+                  width: `${80}%`,
+                  height: '30%',
                   backgroundColor:
-                  progress < 0.33 ? '#E57373' : progress < 0.66 ? '#C89002' : '#81C784', // Red, Yellow, Green
+                  '#70C4C3',
+                  marginTop: 20,
                 },
               ]}
                 />
-                  <Text style={[styles.progressBarText, 
-                    {
-                      color: progress < 0.33 ? '#E57373' : progress < 0.66 ? '#C89002' : '#81C784',
-                    }
-                  ]}>
-                    {progress === 1 ? 'Great start!' : 'Keep it up!'}
-                  </Text>
-                </View>
-                <View style={styles.modalProgress}>
-                          <Image
-                            source={require('../assets/images/profileCreationQ8.png')}
-                            style={styles.progressBar}
-                          />
-                          <Image
-                            source={require('../assets/images/Burst.png')}
-                            style={styles.burst}
-                          />
-                          
-              </View>
+              <Text style= {{color: 'white', alignItems: 'center'}}>
+            100%
+          </Text>
+                <Image
+                source={require('../assets/images/Burst.png')}
+                style = {styles.burst}
+              />
               </View>
 
               </View>
@@ -350,7 +339,7 @@ export default function Checklist() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //padding: 10,
+    padding: 10,
     backgroundColor: '#fff',
   },
   item: {
@@ -421,8 +410,8 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    // justifyContent: 'flex-start',
+    // alignItems: 'flex-start',
     flex:1,
 
     //padding: 10,
@@ -484,12 +473,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   progressBar: {
-    width: '80%', // Adjust width as needed
-    //height: 50, // Adjust height as needed
+    width: '80%', 
     resizeMode: 'contain',
-  },
-  burst:{
-    margin:0
   },
   centeredView: {
     flex: 1,
@@ -581,4 +566,10 @@ const styles = StyleSheet.create({
     marginTop: 20, // Add some margin at the top
     flexDirection: 'row'
   },
+  modalProgressContainer: {
+    flexDirection: 'row'
+  },
+  burst:{
+    margin:0
+  }
 });
