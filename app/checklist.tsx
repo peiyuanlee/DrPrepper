@@ -4,7 +4,8 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal, Animated, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useRouter } from 'expo-router'; // For navigation
+import { useRouter } from 'expo-router'; 
+import BottomRibbon from './BottomRibbon';
 
 export default function Checklist() {
   const [items, setItems] = useState([
@@ -91,9 +92,16 @@ export default function Checklist() {
   };
 
   const toggleExpanded = (id: number) => {
-    const updatedItems = items.map((item) =>
-      item.id === id ? { ...item, expanded: !item.expanded } : item
-    );
+    const updatedItems = items.map((item) => {
+      if (item.id === id) {
+        // Show the modal only when "Pack Go-Bag" is expanded
+        if (item.text === 'Pack Go-Bag' && !item.expanded) {
+          setShowPackGoBagModal(true); // Show the modal
+        }
+        return { ...item, expanded: !item.expanded };
+      }
+      return item;
+    });
     setItems(updatedItems);
   };
 
@@ -125,7 +133,10 @@ export default function Checklist() {
 
   const handleNextScreen = () => {
     setShowPopup(false); // Close the modal
-    router.push('/dashboard'); // Navigate to the next screen
+    router.push({
+      pathname: '/dashboard',
+      params: { progress: progress }, // Pass progress as a query parameter
+  });
   };
   const [modalVisible, setModalVisible] = useState(true);
 
@@ -135,11 +146,15 @@ export default function Checklist() {
 
   const handleMaybeLater = () => {
     setModalVisible(false); 
+    router.push({
+      pathname: '/dashboard',
+      params: { progress: progress }, // Pass progress as a query parameter
+  });
   };
+  const [showPackGoBagModal, setShowPackGoBagModal] = useState(false);
 
   return (
     <SafeAreaView style= {styles.container} >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
       <Modal
       visible={modalVisible}
       transparent={true}
@@ -176,6 +191,9 @@ export default function Checklist() {
       </View>
     </Modal>
 
+    
+    
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
         <View style={styles.headerContainer}>
           <Image
             source={require('../assets/images/checklist_chat.png')}
@@ -264,6 +282,7 @@ export default function Checklist() {
             )}
           </View>
         ))}
+        
       </ScrollView>
 
       <View style={styles.progressContainer}>
@@ -283,6 +302,42 @@ export default function Checklist() {
           </Text>
         </View>
       </View>
+      <BottomRibbon />
+
+      <Modal
+          visible={showPackGoBagModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowPackGoBagModal(false)}
+        >
+          <View style={styles.modalBackground}>
+            <View style={[styles.modalContainer, {height: '35%'}]}>
+              {/* Modal Header */}
+              <View style={styles.modalGoBag}>
+                <Text style={[styles.modalTitle, {marginBottom: 0}]}>30% off Go-Bag</Text>
+              </View>
+
+              {/* Modal Content */}
+              <Text style={[styles.modalText, {padding: 30}]}>
+              Get your complete Go-Bag for up to 30% off from our retail partners
+              </Text>
+
+              {/* Close Button */}
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setShowPackGoBagModal(false)}
+              >
+                <Text style={[styles.buttonText, {fontSize: 14, color: '#fff'}]}>Take me to the marketplace!</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.maybeLaterButton}
+                onPress={() => setShowPackGoBagModal(false)}
+              >
+                <Text style={styles.noMarketButton}>Nah, I'll do it myself</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
 
       {/* Popup Screen */}
       <Modal
@@ -318,6 +373,10 @@ export default function Checklist() {
                   backgroundColor:
                   '#70C4C3',
                   marginTop: 20,
+                  alignItems: 'center',
+                  padding: 10,
+                  marginRight:0,
+                  left:40,
                 },
               ]}
                 />
@@ -327,11 +386,12 @@ export default function Checklist() {
                 <Image
                 source={require('../assets/images/Burst.png')}
                 style = {styles.burst}
-              />
+                />
               </View>
 
               </View>
       </Modal>
+      
     </SafeAreaView>
   );
 }
@@ -390,7 +450,7 @@ const styles = StyleSheet.create({
     borderColor: '#4CAF50',
   },
   progressContainer: {
-    marginBottom: 20,
+    marginBottom: 50,
     paddingHorizontal: 10,
   },
   progressText: {
@@ -406,15 +466,19 @@ const styles = StyleSheet.create({
     width: '30%',
   },
   chatbox: {
-    width:'70%'
+    width:'60%'
   },
   headerContainer: {
     flexDirection: 'row',
-    // justifyContent: 'flex-start',
-    // alignItems: 'flex-start',
-    flex:1,
-
-    //padding: 10,
+    justifyContent: 'space-between', // Space out the children
+    alignItems: 'center', // Center children vertically
+    width: '100%', // Take up full width
+    height:'30%',
+    //paddingHorizontal: 20, // Add horizontal padding
+    marginBottom: -40,
+    //position: 'absolute',
+    top: 0,
+    marginTop: -40,
   },
   progressBarBackground: {
     height: 30,
@@ -475,26 +539,6 @@ const styles = StyleSheet.create({
   progressBar: {
     width: '80%', 
     resizeMode: 'contain',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   modalBackground: {
     flex: 1,
@@ -564,12 +608,44 @@ const styles = StyleSheet.create({
   modalProgress: {
     alignItems: 'center', // Center progress bar and text horizontally
     marginTop: 20, // Add some margin at the top
-    flexDirection: 'row'
+    flexDirection: 'row', 
+    
   },
   modalProgressContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   burst:{
-    margin:0
+    margin:0,
+
+  },
+  closeButton:{
+    backgroundColor: '#C83402',
+    padding: 15,
+    borderRadius: 10,
+    width: '70%',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  noMarketButton:{
+    color: '#C83402',
+    fontSize: 12,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+
+  },
+  modalGoBag:{
+    backgroundColor: '#C83402',
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20,
+    padding: 10,
+    justifyContent: 'center',
+    height: '20%'
+
+  },
+  goBagText:{
+    color: '#fff'
   }
 });

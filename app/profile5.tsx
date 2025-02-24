@@ -47,6 +47,18 @@ export default function Profile5() {
               No
             </Text>
           </TouchableOpacity>
+          <View style={styles.spacer} />
+          <View style={styles.spacer} />
+          <View style={styles.spacer} />
+          <View style={styles.bottomContainer}>
+            <Image
+              source={require('../assets/images/profile5_readyraccoon.png')}
+              style={styles.chat}
+              resizeMode="contain"
+            />
+          </View>
+
+
         </ImageBackground>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -104,4 +116,13 @@ const styles = StyleSheet.create({
   spacer: {
     height: 50, // Adjust the height as needed
   },
+  bottomContainer:{
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    //flex: 1,
+  },
+  chat:{
+    width: '50%'
+  }
 });

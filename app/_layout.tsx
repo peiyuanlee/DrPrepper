@@ -77,6 +77,8 @@ export default function RootLayout() {
       <Stack.Screen name="profile9" options={{ title: 'Profile9', headerShown: false }} />
       <Stack.Screen name="checklist" options={{ title: 'Checklist', headerShown: false }} />
       <Stack.Screen name="dashboard" options={{ title: 'Dashboard', headerShown: false }} />
+      <Stack.Screen name="marketplace" options={{ title: 'Marketplace', headerShown: false }} />
+      <Stack.Screen name="resources" options={{ title: 'Resource', headerShown: false }} />
     </JsStack>
   );
 }
