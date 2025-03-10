@@ -33,12 +33,7 @@ function HomeScreen() {
       />
 
       {/* Buttons */}
-      <Link href="/location">
-      <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
-      <Text style={styles.buttonText}>Sign In</Text>
-    </TouchableOpacity>
-    </Link>
-    <TouchableOpacity style={styles.button} onPress={navProfile}>
+    <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
       <Text style={styles.buttonText}> 
         Create Profile
      </Text>

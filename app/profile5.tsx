@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginTop: 40
     //flex: 1,
   },
   chat:{

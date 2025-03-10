@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const BottomRibbon = () => {
 const router = useRouter();
-const handleNextScreen = () => {
-    router.push('/checklist'); 
+const handleCommunity = () => {
+  router.push('/community'); 
 };
 const handleDashboard = () => {
   router.push('/dashboard'); 
@@ -18,9 +18,10 @@ const handleResources = () => {
   router.push('/resources'); 
 };
 
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
+      <TouchableOpacity style={styles.button} onPress={handleCommunity}>
       <Icon name="public" size={30} color="#fff" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleResources}>

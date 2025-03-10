@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, Modal,Animated } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, Modal,Animated, Pressable } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import BottomRibbon from './BottomRibbon';
 import Icon from 'react-native-vector-icons/Feather';
+import { globals } from './globals';
 
 const { width, height } = Dimensions.get('window');
 export default function DashboardScreen() {
+    const router = useRouter();
+    const handleBaselineBadge = () => {
+      router.push('/checklist'); 
+    };
      const [modalFireVisible, setFireModalVisible] = useState(false);
      const [modalMudVisible, setMudModalVisible] = useState(false);
      const [modalEarthVisible, setEarthModalVisible] = useState(false);
@@ -15,7 +20,7 @@ export default function DashboardScreen() {
         setFireModalVisible(false); 
       };
       const handleOpenFireModal = () => {
-        if (progress !== 1) {
+        if (progressBaseline !== 1) {
             setModalVisible(true); 
         } else {
             setFireModalVisible(true); 
@@ -25,7 +30,7 @@ export default function DashboardScreen() {
         setMudModalVisible(false); 
       };
       const handleOpenMudModal = () => {
-        if (progress !== 1) {
+        if (progressBaseline !== 1) {
             setModalVisible(true); 
         } else {
             setMudModalVisible(true); 
@@ -35,7 +40,7 @@ export default function DashboardScreen() {
         setEarthModalVisible(false); 
       };
       const handleOpenEarthModal = () => {
-        if (progress !== 1) {
+        if (progressBaseline !== 1) {
             setModalVisible(true); 
         } else {
             setEarthModalVisible(true); 
@@ -46,6 +51,8 @@ export default function DashboardScreen() {
       };
       const params = useLocalSearchParams();
       const progress = typeof params.progress === 'string' ? parseFloat(params.progress) : 0;
+
+      const [progressBaseline, setProgress] = useState(globals.progress);
 
       useEffect(() => {
         const inactivityTimeout = 5000; // 5 seconds of inactivity
@@ -125,26 +132,28 @@ export default function DashboardScreen() {
 
          <View style={styles.spacer} />
 
+        
         <Text style={styles.buttonText}>
             Baseline Badge
         </Text>
+        <TouchableOpacity onPress={handleBaselineBadge} disabled={globals.disabled}> 
         <View style={styles.progressContainer}>
   <View style={styles.progressBarBackground}>
     <View
       style={[
         styles.progressBarFill,
         {
-          width: `${(progress+0.15)*100}%`, 
-          backgroundColor: progress === 1 ? '#70C4C3' : '#C83402',
+          width: `${(progressBaseline+0.15)*100}%`, 
+          backgroundColor: progressBaseline === 1 ? '#70C4C3' : '#C83402',
         },
       ]}
     />
-    <Text style={styles.progressBarText}>{progress*100}%</Text>
+    <Text style={styles.progressBarText}>{progressBaseline*100}%</Text>
   </View>
-  {progress === 1 ?                   
+  {progressBaseline === 1 ?                   
                 <Image
                     source={require('../assets/images/badge.png')} 
-                    style={{width: '13%', left: 300, position: 'absolute', bottom: 27}}
+                    style={{width: '13%', left: 325, position: 'absolute', bottom: 27}}
                     resizeMode="contain"
                   /> : 
             <Icon
@@ -153,12 +162,13 @@ export default function DashboardScreen() {
                 color="#000"
                 style= {{
                     position: 'absolute',
-                    left:300,
+                    left:325,
                     
                 }}
             />}
             
 </View>
+</TouchableOpacity>
 
         <Text style={styles.buttonText}>
             Fire Safety Badge
@@ -186,7 +196,7 @@ export default function DashboardScreen() {
                 color="#000"
                 style= {{
                     position: 'absolute',
-                    left:300,
+                    left:325,
                     
                 }}
             />
@@ -218,7 +228,7 @@ export default function DashboardScreen() {
                 color="#000"
                 style= {{
                     position: 'absolute',
-                    left:300,
+                    left:325,
                     
                 }}
             />
@@ -251,7 +261,7 @@ export default function DashboardScreen() {
                 color="#000"
                 style= {{
                     position: 'absolute',
-                    left:300,
+                    left:325,
                     
                 }}
             />
@@ -259,7 +269,7 @@ export default function DashboardScreen() {
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
 
-        {progress === 1 ?                   
+        {progressBaseline === 1 ?                   
                 <Image
                 source={require('../assets/images/Group 19.png')} // Replace with your image
                 style={{width: '60%', left:30}}
@@ -401,17 +411,17 @@ export default function DashboardScreen() {
               onRequestClose={() => setModalVisible(false)}
             >
               <View style={styles.modalBackground}>
-                <View style={[styles.modalContainer, {height: '37%'}]}>
+                <View style={[styles.modalContainer, {height: 300}]}>
                   
-                  <View style = {[styles.modalHeader, {backgroundColor: '#EB6147', height: '25%'}]}> 
-                    <Text style={[styles.modalTitle, {fontSize: 18}]}>Finish your Baseline Badge{"\n"}before moving on to others</Text>
+                  <View style = {[styles.modalHeader, {backgroundColor: '#EB6147', height: 70}]}> 
+                    <Text style={[styles.modalTitle, {fontSize: 20}]}>Finish your Baseline Badge{"\n"}before moving on to others</Text>
                     </View>
                   
                   <Text style={styles.modalText}>
                     This will make sure you're best prepared based on your unique individual needs!
                   </Text>
-                  <TouchableOpacity style={[styles.startButton, {backgroundColor: '#EB6147', width: '90%', height: '15%'}]} onPress={handleCloseModal}>
-                    <Text style={[styles.modalButtonText, {color: '#fff', fontSize: 12}]}>Get to work on my Baseline Badge!</Text>
+                  <TouchableOpacity style={[styles.startButton, {backgroundColor: '#EB6147', width: '85%', height: '15%'}]} onPress={handleCloseModal}>
+                    <Text style={[styles.modalButtonText, {color: '#fff', fontSize: 15}]}>Get to work on my Baseline Badge!</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.maybeLaterButton} onPress={handleCloseModal}>
                     <Text style={[styles.maybeLaterText, {color: '#EB6147'}]}>Back to my profile</Text>
@@ -420,16 +430,31 @@ export default function DashboardScreen() {
               </View>
             </Modal>
 
-            <TouchableOpacity
-                        style={styles.fullScreenTouchable}
-                        activeOpacity={1} // Make it invisible
-                        onPress={() => {
-                            setIsInactive(false); // Hide the overlay on interaction
+{isInactive && (
+                <TouchableOpacity
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        
+                    }}
+                    activeOpacity={1}
+                    onPress={() => setIsInactive(false)}
+                >
+                    <Animated.View
+                        style={{
+                            flex: 1,
+                            opacity: fadeAnim,
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
-                        {/* Empty View to capture touches */}
-                        <View style={styles.fullScreenTouchable} />
-                    </TouchableOpacity>
+            
+                    </Animated.View>
+                </TouchableOpacity>
+            )}
 
 
         <BottomRibbon />
@@ -500,7 +525,7 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     alignItems: 'center', // Center progress bar and text horizontally
-    marginTop: 20, // Add some margin at the top
+    marginTop: 10, // Add some margin at the top
     width: '85%'
   },
   spacer: {
@@ -570,7 +595,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     overflow: 'hidden',
-    height:'38%'
+    height:350
   },
   modalImage: {
     width: '15%'
@@ -580,8 +605,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
-    color: '#fff'
+    color: '#fff', 
+    padding: 15
   },
   modalText: {
     fontSize: 16,

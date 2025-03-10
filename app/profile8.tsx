@@ -132,6 +132,6 @@ const styles = StyleSheet.create({
   raccoon: {
     width: 80, // Adjust width as needed
     height: 80, // Adjust height as needed
-    //marginTop: 20, // Add some margin at the top
+    marginTop: 70, // Add some margin at the top
   },
 });

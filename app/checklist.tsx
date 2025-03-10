@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import * as Progress from 'react-native-progress';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ScrollView, Modal, Animated, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router'; 
 import BottomRibbon from './BottomRibbon';
+import { globals } from './globals';
 
 export default function Checklist() {
   const [items, setItems] = useState([
@@ -122,6 +122,15 @@ export default function Checklist() {
   const progress = completedCount / totalItems;
 
 
+  const [progressBaseline, setProgress] = useState(globals.progress);
+
+  const handleBaselineBadge = () => {
+    const newProgress = completedCount / totalItems; 
+    globals.progress = newProgress; // Update global variable
+    setProgress(newProgress); // Update local state to trigger re-render
+  };
+
+
   // Progress bar animation
   const animateProgressBar = () => {
     Animated.timing(progressAnim, {
@@ -133,9 +142,18 @@ export default function Checklist() {
 
   const handleNextScreen = () => {
     setShowPopup(false); // Close the modal
+    handleBaselineBadge();
     router.push({
       pathname: '/dashboard',
       params: { progress: progress }, // Pass progress as a query parameter
+  });
+  };
+
+  const handleMarketScreen = () => {
+    setShowPackGoBagModal(false); // Close the modal
+    router.push({
+      pathname: '/marketplace',
+       // Pass progress as a query parameter
   });
   };
   const [modalVisible, setModalVisible] = useState(true);
@@ -311,7 +329,7 @@ export default function Checklist() {
           onRequestClose={() => setShowPackGoBagModal(false)}
         >
           <View style={styles.modalBackground}>
-            <View style={[styles.modalContainer, {height: '35%'}]}>
+            <View style={[styles.modalContainer, {height: 285}]}>
               {/* Modal Header */}
               <View style={styles.modalGoBag}>
                 <Text style={[styles.modalTitle, {marginBottom: 0}]}>30% off Go-Bag</Text>
@@ -325,7 +343,7 @@ export default function Checklist() {
               {/* Close Button */}
               <TouchableOpacity
                 style={styles.closeButton}
-                onPress={() => setShowPackGoBagModal(false)}
+                onPress={handleMarketScreen}
               >
                 <Text style={[styles.buttonText, {fontSize: 14, color: '#fff'}]}>Take me to the marketplace!</Text>
               </TouchableOpacity>
@@ -376,7 +394,7 @@ export default function Checklist() {
                   alignItems: 'center',
                   padding: 10,
                   marginRight:0,
-                  left:40,
+                  left:30,
                 },
               ]}
                 />
@@ -385,7 +403,9 @@ export default function Checklist() {
           </Text>
                 <Image
                 source={require('../assets/images/Burst.png')}
-                style = {styles.burst}
+                style = {[styles.burst, {
+                  right: 10
+                }]}
                 />
               </View>
 
@@ -552,7 +572,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     overflow: 'hidden',
-    height:'40%'
+    height:350,
   },
   modalImage: {
     width: '15%'
@@ -642,7 +662,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 10,
     justifyContent: 'center',
-    height: '20%'
+    height: '25%'
 
   },
   goBagText:{

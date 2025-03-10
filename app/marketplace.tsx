@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     overflow: 'hidden',
-    height:'38%'
+    height:325
   },
   modalImage: {
     width: '15%'
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
+    marginTop: 10,
     color: '#fff'
   },
   modalText: {

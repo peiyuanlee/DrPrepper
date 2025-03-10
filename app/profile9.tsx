@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 30
   },
   buttonText: {
     color: '#000000', // Fixed color code (was missing a '0')
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
   groupImage: {
     width: 350, // Adjust width as needed
     //height: 350, // Adjust height as needed
-    //marginTop: 20, // Add some margin at the top
+    marginTop: 70, // Add some margin at the top
   },
   raccoon: {
     width: 200, // Adjust width as needed

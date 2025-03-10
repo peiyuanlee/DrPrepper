@@ -1,7 +1,22 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Dimensions, TextInput, Alert } from 'react-native';
+import React, { useRef, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+  Dimensions,
+  TextInput,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,6 +27,11 @@ export default function AboutScreen() {
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
   const router = useRouter();
+
+  // Create refs for each input field
+  const nameInputRef = useRef<TextInput>(null);
+  const emailInputRef = useRef<TextInput>(null);
+  const phoneInputRef = useRef<TextInput>(null);
 
   // Validate the form inputs
   const validateForm = () => {
@@ -40,66 +60,93 @@ export default function AboutScreen() {
     }
   };
 
+  // Dismiss the keyboard
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={['left', 'right']}>
-        <ImageBackground source={require('../assets/images/profile_creation_bg.png')} resizeMode="stretch" style={styles.image}>
-          <View style={styles.spacer} />
+        <TouchableWithoutFeedback onPress={dismissKeyboard} accessible={false}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.keyboardAvoidingView}
+          >
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+              <ImageBackground
+                source={require('../assets/images/profile_creation_bg.png')}
+                resizeMode="stretch"
+                style={styles.image}
+              >
+                <View style={styles.spacer} />
 
-          {/* Progress Bar */}
-          <View style={styles.topContainer}>
-            <Image source={require('../assets/images/profileCreationQ1.png')} style={styles.progressBar} />
-            <Text style={styles.qText}>Question 1/8</Text>
-          </View>
+                {/* Progress Bar */}
+                <View style={styles.topContainer}>
+                  <Image source={require('../assets/images/profileCreationQ1.png')} style={styles.progressBar} />
+                  <Text style={styles.qText}>Question 1/8</Text>
+                </View>
 
-          {/* Question Text */}
-          <Text style={styles.quesText}>Tell us about yourself!</Text>
+                {/* Question Text */}
+                <Text style={styles.quesText}>Tell us about yourself!</Text>
 
-          {/* Spacer */}
-          <View style={styles.spacer} />
+                {/* Spacer */}
+                <View style={styles.spacer} />
 
-          {/* Info Text */}
-          <Text style={styles.infoText}>
-            This information helps us get you as ready as possible for any natural disaster.
-          </Text>
+                {/* Info Text */}
+                <Text style={styles.infoText}>
+                  This information helps us get you as ready as possible for any natural disaster.
+                </Text>
 
-          {/* Name Input */}
-          <Text style={styles.fieldText}>Name</Text>
-          <TextInput
-            style={[styles.input, errors.name && styles.errorInput]}
-            placeholder="Full Name"
-            value={name}
-            onChangeText={setName}
-          />
-          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+                {/* Name Input */}
+                <Text style={styles.fieldText}>Name</Text>
+                <TextInput
+                  ref={nameInputRef}
+                  style={[styles.input, errors.name && styles.errorInput]}
+                  placeholder="Full Name"
+                  value={name}
+                  onChangeText={setName}
+                  onSubmitEditing={() => emailInputRef.current?.focus()} // Move to email input
+                  returnKeyType="next"
+                />
+                {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
 
-          {/* Email Input */}
-          <Text style={styles.fieldText}>Email</Text>
-          <TextInput
-            style={[styles.input, errors.email && styles.errorInput]}
-            placeholder="Email"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+                {/* Email Input */}
+                <Text style={styles.fieldText}>Email</Text>
+                <TextInput
+                  ref={emailInputRef}
+                  style={[styles.input, errors.email && styles.errorInput]}
+                  placeholder="Email"
+                  keyboardType="email-address"
+                  value={email}
+                  onChangeText={setEmail}
+                  onSubmitEditing={() => phoneInputRef.current?.focus()} // Move to phone input
+                  returnKeyType="next"
+                />
+                {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
-          {/* Phone Input */}
-          <Text style={styles.fieldText}>Phone Number</Text>
-          <TextInput
-            style={[styles.input, errors.phone && styles.errorInput]}
-            placeholder="Phone Number"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
-          {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
+                {/* Phone Input */}
+                <Text style={styles.fieldText}>Phone Number</Text>
+                <TextInput
+                  ref={phoneInputRef}
+                  style={[styles.input, errors.phone && styles.errorInput]}
+                  placeholder="Phone Number"
+                  keyboardType="number-pad"
+                  value={phone}
+                  onChangeText={setPhone}
+                  onSubmitEditing={handleNextScreen} // Submit form when "Next" is pressed
+                  returnKeyType="done"
+                />
+                {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
 
-          {/* Next Button */}
-          <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
-            <Text style={styles.buttonText}>Next</Text>
-          </TouchableOpacity>
-        </ImageBackground>
+                {/* Next Button */}
+                <TouchableOpacity style={styles.button} onPress={handleNextScreen}>
+                  <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+              </ImageBackground>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -193,5 +240,13 @@ const styles = StyleSheet.create({
   },
   spacer: {
     height: 50,
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
